@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Ackshayaradhakrishnan - Diploma Computer Science student at Seshasayee Institute of Technology specializing in Cybersecurity and Networking." />
+<meta name="keywords" content="Ackshayaradhakrishnan, Cybersecurity, Networking, CCNA, Cisco Packet Tracer, Portfolio" />
+<title>Ackshayaradha | Cybersecurity & Networking Portfolio</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+  :root {
+    --bg-0: #030617;
+    --bg-1: #050a24;
+    --bg-2: #0a1236;
+    --cyan: #00f0ff;
+    --cyan-dim: #00a8b3;
+    --blue: #0066ff;
+    --blue-glow: #3d8bff;
+    --purple: #7b2cff;
+    --green: #00ff9d;
+    --text: #e6f1ff;
+    --text-dim: #8892b0;
+    --glass: rgba(10, 20, 50, 0.45);
+    --glass-border: rgba(0, 240, 255, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-0);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Cyber grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  /* Matrix rain canvas */
+  #matrix-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.18;
+    pointer-events: none;
+  }
+
+  /* Particles canvas */
+  #particles-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* 3D Globe container */
+  #globe-container {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* Glassmorphism */
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-strong {
+    background: rgba(5, 12, 35, 0.75);
+    backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+  }
+
+  /* Glowing borders */
+  .glow-border {
+    position: relative;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    box-shadow:
+      0 0 20px rgba(0, 240, 255, 0.15),
+      inset 0 0 20px rgba(0, 240, 255, 0.05);
+  }
+
+  .glow-border:hover {
+    border-color: rgba(0, 240, 255, 0.7);
+    box-shadow:
+      0 0 40px rgba(0, 240, 255, 0.35),
+      inset 0 0 30px rgba(0, 240, 255, 0.08);
+  }
+
+  /* Neon text */
+  .neon-text {
+    color: var(--cyan);
+    text-shadow:
+      0 0 10px rgba(0, 240, 255, 0.6),
+      0 0 20px rgba(0, 240, 255, 0.4),
+      0 0 40px rgba(0, 240, 255, 0.2);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--blue-glow) 50%, var(--purple) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Terminal */
+  .terminal {
+    background: rgba(0, 5, 20, 0.85);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    border-radius: 12px;
+    box-shadow:
+      0 0 40px rgba(0, 240, 255, 0.2),
+      inset 0 0 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .terminal-header {
+    background: linear-gradient(180deg, rgba(10, 20, 50, 0.9), rgba(5, 10, 30, 0.9));
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  }
+
+  .terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .terminal-body {
+    padding: 20px;
+    min-height: 220px;
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .prompt { color: var(--green); }
+  .command { color: var(--cyan); }
+  .output { color: var(--text-dim); }
+
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background: var(--cyan);
+    animation: blink 1s infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* Typing animation */
+  .typing-text {
+    display: inline-block;
+    border-right: 3px solid var(--cyan);
+    animation: blink 1s infinite;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  /* 3D Card */
+  .card-3d {
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  .card-3d:hover {
+    transform: translateY(-8px) rotateX(4deg) rotateY(-4deg);
+    box-shadow:
+      0 20px 60px rgba(0, 240, 255, 0.25),
+      0 0 80px rgba(0, 102, 255, 0.15);
+  }
+
+  /* Skill card */
+  .skill-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+  }
+
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, var(--cyan), transparent 30%);
+    animation: rotate 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .skill-card::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: linear-gradient(135deg, rgba(5, 12, 35, 0.95), rgba(10, 20, 50, 0.95));
+    border-radius: 14px;
+    z-index: 0;
+  }
+
+  .skill-card:hover::before { opacity: 1; }
+  .skill-card > * { position: relative; z-index: 1; }
+
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    height: 10px;
+    background: rgba(0, 240, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+    border-radius: 10px;
+    width: 0;
+    transition: width 2s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 0 20px var(--cyan);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Section title */
+  .section-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    color: var(--cyan);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Circuit lines */
+  .circuit {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    height: 1px;
+    opacity: 0.3;
+    animation: circuit-flow 3s linear infinite;
+  }
+
+  @keyframes circuit-flow {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--green);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-0); }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--cyan), var(--blue));
+    border-radius: 4px;
+  }
+
+  /* Icon */
+  .icon-box {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 102, 255, 0.15));
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    border-radius: 12px;
+    color: var(--cyan);
+    font-size: 1.5rem;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+  }
+
+  /* Hero content z-index */
+  .hero-content { position: relative; z-index: 2; }
+
+  /* Scan line effect */
+  .scanline {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 240, 255, 0.03) 50%, transparent 100%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    animation: scan 8s linear infinite;
+  }
+
+  @keyframes scan {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+  }
+
+  /* Button */
+  .cyber-btn {
+    position: relative;
+    padding: 12px 28px;
+    background: transparent;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .cyber-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--cyan), var(--blue));
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+    z-index: -1;
+  }
+
+  .cyber-btn:hover {
+    color: var(--bg-0);
+    box-shadow: 0 0 30px var(--cyan);
+  }
+
+  .cyber-btn:hover::before { transform: translateX(0); }
+
+  /* Floating animation */
+  .float { animation: float 6s ease-in-out infinite; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .float-delay { animation: float 6s ease-in-out infinite; animation-delay: 2s; }
+</style>
+</head>
+<body>
+
+<!-- Background layers -->
+<canvas id="matrix-canvas"></canvas>
+<canvas id="particles-canvas"></canvas>
+
+<!-- HERO SECTION -->
+<section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <div id="globe-container"></div>
+  <div class="scanline"></div>
+
+  <div class="hero-content max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
+    <!-- Left: Text -->
+    <div class="space-y-6">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        <span>SYSTEM ONLINE · SECURE CONNECTION</span>
+      </div>
+
+      <div class="space-y-2">
+        <p class="font-mono text-sm text-cyan-400 tracking-widest">&gt; INITIALIZING PROFILE...</p>
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+          <span class="block text-gray-400 text-xl md:text-2xl font-mono mb-2">Hello, I'm</span>
+          <span class="gradient-text block">Ackshayaradhakrishnan</span>
+        </h1>
+        <div class="h-12 md:h-16 flex items-center">
+          <span class="text-xl md:text-2xl font-mono text-cyan-300">
+            <span class="text-cyan-500">$</span> <span id="typing-text" class="typing-text"></span>
+          </span>
+        </div>
+      </div>
+
+      <p class="text-gray-400 text-lg max-w-xl leading-relaxed">
+        Diploma Computer Science student at <span class="text-cyan-400 font-semibold">Seshasayee Institute of Technology</span>, building a secure digital future through cybersecurity, networking, and intelligent automation.
+      </p>
+
+      <div class="flex flex-wrap gap-4 pt-4">
+        <a href="#projects" class="cyber-btn">View Projects</a>
+        <a href="#about" class="cyber-btn" style="border-color:var(--blue);color:var(--blue);">Learn More</a>
+      </div>
+
+      <div class="flex gap-6 pt-6 text-sm font-mono">
+        <div>
+          <div class="text-2xl font-bold neon-text">7+</div>
+          <div class="text-gray-500 text-xs">SKILLS</div>
+        </div>
+        <div class="w-px bg-cyan-900"></div>
+        <div>
+          <div class="text-2xl font-bold neon-text">3</div>
+          <div class="text-gray-500 text-xs">PROJECTS</div>
+        </div>
+        <div class="w-px bg-cyan-900"></div>
+        <div>
+          <div class="text-2xl font-bold neon-text">1</div>
+          <div class="text-gray-500 text-xs">INTERNSHIP</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Terminal -->
+    <div class="terminal float">
+      <div class="terminal-header">
+        <div class="terminal-dot" style="background:#ff5f56;"></div>
+        <div class="terminal-dot" style="background:#ffbd2e;"></div>
+        <div class="terminal-dot" style="background:#27c93f;"></div>
+        <span class="ml-4 text-xs text-gray-400 font-mono">ackshayaradha@cyber-sec:~$</span>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <!-- Terminal content injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+    <span class="text-xs font-mono text-cyan-400 tracking-widest">SCROLL</span>
+    <div class="w-6 h-10 border-2 border-cyan-400 rounded-full flex justify-center pt-2">
+      <div class="w-1 h-2 bg-cyan-400 rounded-full" style="animation: float 1.5s infinite;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about" class="relative py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-subtitle">// 01 . WHO AM I</p>
+      <h2 class="section-title gradient-text">About Me</h2>
+      <div class="w-24 h-1 mx-auto mt-4" style="background:linear-gradient(90deg,transparent,var(--cyan),transparent);"></div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="md:col-span-2 glass glow-border p-8 reveal">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-display font-bold neon-text">Ackshayaradha</h3>
+        </div>
+
+        <p class="text-gray-300 leading-relaxed mb-4">
+          I am <span class="text-cyan-400 font-semibold">Ackshayaradha</span>, a passionate Diploma Computer Science student at <span class="text-cyan-400 font-semibold">Seshasayee Institute of Technology</span>, driven by a deep fascination with the digital world's security and connectivity.
+        </p>
+        <p class="text-gray-300 leading-relaxed mb-4">
+          My focus lies at the intersection of <span class="text-cyan-400">Cybersecurity</span> and <span class="text-cyan-400">Networking</span>, where I explore how to build resilient, intelligent, and secure infrastructures. I specialize in designing practical networking solutions using <span class="text-cyan-400">Cisco Packet Tracer</span>, crafting everything from basic network topologies to smart automation systems.
+        </p>
+        <p class="text-gray-300 leading-relaxed">
+          As a future <span class="text-cyan-400">CCNA Professional</span>, I am committed to mastering enterprise networking while contributing to a safer, smarter digital ecosystem through continuous learning and hands-on projects.
+        </p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-cyan-900/30">
+          <div>
+            <div class="text-xs text-gray-500 font-mono">INSTITUTE</div>
+            <div class="text-sm text-cyan-300 font-semibold mt-1">SIT</div>
+          </div>
+          <div>
+            <div class="text-xs text-gray-500 font-mono">PROGRAM</div>
+            <div class="text-sm text-cyan-300 font-semibold mt-1">Diploma CSE</div>
+          </div>
+          <div>
+            <div class="text-xs text-gray-500 font-mono">FOCUS</div>
+            <div class="text-sm text-cyan-300 font-semibold mt-1">Cyber Sec</div>
+          </div>
+          <div>
+            <div class="text-xs text-gray-500 font-mono">GOAL</div>
+            <div class="text-sm text-cyan-300 font-semibold mt-1">CCNA Pro</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="glass glow-border p-6 reveal card-3d">
+          <div class="icon-box mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h4 class="font-display font-bold text-lg mb-2">Security First</h4>
+          <p class="text-sm text-gray-400">Building systems with security as the foundation, not an afterthought.</p>
+        </div>
+
+        <div class="glass glow-border p-6 reveal card-3d">
+          <div class="icon-box mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <h4 class="font-display font-bold text-lg mb-2">Network Mindset</h4>
+          <p class="text-sm text-gray-400">Understanding connectivity at every layer of the OSI model.</p>
+        </div>
+
+        <div class="glass glow-border p-6 reveal card-3d">
+          <div class="icon-box mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <h4 class="font-display font-bold text-lg mb-2">Always Learning</h4>
+          <p class="text-sm text-gray-400">Constantly evolving with the latest in tech and cybersecurity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS SECTION -->
+<section id="skills" class="relative py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-subtitle">// 02 . TECH ARSENAL</p>
+      <h2 class="section-title gradient-text">Skills & Expertise</h2>
+      <div class="w-24 h-1 mx-auto mt-4" style="background:linear-gradient(90deg,transparent,var(--cyan),transparent);"></div>
+    </div>
+
+    <div id="skills-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- Skill cards rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS SECTION -->
+<section id="projects" class="relative py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-subtitle">// 03 . BUILT BY ME</p>
+      <h2 class="section-title gradient-text">Featured Projects</h2>
+      <div class="w-24 h-1 mx-auto mt-4" style="background:linear-gradient(90deg,transparent,var(--cyan),transparent);"></div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Project 1 -->
+      <div class="glass glow-border p-8 reveal card-3d">
+        <div class="flex items-start justify-between mb-6">
+          <div class="icon-box">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>
+            </svg>
+          </div>
+          <span class="badge"><span class="badge-dot"></span>COMPLETED</span>
+        </div>
+        <h3 class="text-2xl font-display font-bold mb-3 neon-text">Basic Networking Design</h3>
+        <p class="text-sm font-mono text-cyan-400 mb-4">Cisco Packet Tracer</p>
+        <p class="text-gray-400 mb-6 leading-relaxed">
+          Designed and implemented a complete basic networking topology using Cisco Packet Tracer, demonstrating core concepts of IP addressing, subnetting, VLAN configuration, and inter-device communication across routers and switches.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Cisco PT</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Routing</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Switching</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">VLAN</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-500 font-mono">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Project Status: Deployed</span>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="glass glow-border p-8 reveal card-3d">
+        <div class="flex items-start justify-between mb-6">
+          <div class="icon-box">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="10" y1="3" x2="10" y2="9"/>
+            </svg>
+          </div>
+          <span class="badge"><span class="badge-dot"></span>COMPLETED</span>
+        </div>
+        <h3 class="text-2xl font-display font-bold mb-3 neon-text">Smart Railway Crossing</h3>
+        <p class="text-sm font-mono text-cyan-400 mb-4">Cisco Packet Tracer · IoT</p>
+        <p class="text-gray-400 mb-6 leading-relaxed">
+          Built an intelligent railway crossing automation system using IoT principles in Cisco Packet Tracer. The system uses sensors and networked devices to detect approaching trains and automatically control crossing signals for enhanced safety.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">IoT</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Automation</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Sensors</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Safety</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-500 font-mono">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Project Status: Deployed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRENT PROJECT -->
+<section id="current" class="relative py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-subtitle">// 04 . IN PROGRESS</p>
+      <h2 class="section-title gradient-text">Current Project</h2>
+      <div class="w-24 h-1 mx-auto mt-4" style="background:linear-gradient(90deg,transparent,var(--cyan),transparent);"></div>
+    </div>
+
+    <div class="glass glow-border p-8 md:p-12 reveal relative overflow-hidden">
+      <!-- Animated circuit lines -->
+      <div class="circuit" style="top:20%;width:40%;"></div>
+      <div class="circuit" style="bottom:30%;width:60%;animation-delay:1s;"></div>
+
+      <div class="relative z-10">
+        <div class="flex flex-wrap items-center gap-4 mb-6">
+          <div class="icon-box float">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/>
+            </svg>
+          </div>
+          <div>
+            <span class="badge" style="background:rgba(0,255,157,0.15);border-color:rgba(0,255,157,0.5);color:var(--green);">
+              <span class="badge-dot"></span>WORK IN PROGRESS
+            </span>
+          </div>
+        </div>
+
+        <h3 class="text-3xl md:text-4xl font-display font-bold mb-4 neon-text">Smart Railway Station</h3>
+        <p class="text-cyan-400 font-mono mb-6">Cisco Packet Tracer · IoT · Networking · Automation</p>
+
+        <p class="text-gray-300 leading-relaxed mb-8 text-lg">
+          An ambitious project focused on <span class="text-cyan-400 font-semibold">improving railway safety and automation</span> through advanced networking and IoT concepts. This smart station integrates sensor networks, real-time monitoring, automated signaling, and centralized control systems to create a safer, more efficient railway environment.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+          <div class="glass p-4 rounded-lg">
+            <div class="text-cyan-400 font-mono text-xs mb-1">FEATURE 01</div>
+            <div class="font-semibold">IoT Sensor Network</div>
+            <p class="text-xs text-gray-400 mt-1">Real-time monitoring of station infrastructure</p>
+          </div>
+          <div class="glass p-4 rounded-lg">
+            <div class="text-cyan-400 font-mono text-xs mb-1">FEATURE 02</div>
+            <div class="font-semibold">Automated Signaling</div>
+            <p class="text-xs text-gray-400 mt-1">Intelligent train detection and alerts</p>
+          </div>
+          <div class="glass p-4 rounded-lg">
+            <div class="text-cyan-400 font-mono text-xs mb-1">FEATURE 03</div>
+            <div class="font-semibold">Central Control</div>
+            <p class="text-xs text-gray-400 mt-1">Unified network management dashboard</p>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="font-mono text-sm text-cyan-400">DEVELOPMENT PROGRESS</span>
+            <span class="font-mono text-sm neon-text" id="progress-text">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="flex justify-between text-xs text-gray-500 font-mono">
+            <span>Planning ✓</span>
+            <span>Design ✓</span>
+            <span>Development ●</span>
+            <span>Testing ○</span>
+            <span>Deploy ○</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRESENTATIONS -->
+<section id="presentations" class="relative py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-subtitle">// 05 . KNOWLEDGE SHARING</p>
+      <h2 class="section-title gradient-text">Presentations</h2>
+      <div class="w-24 h-1 mx-auto mt-4" style="background:linear-gradient(90deg,transparent,var(--cyan),transparent);"></div>
+    </div>
+
+    <div class="glass glow-border p-8 md:p-12 reveal card-3d relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-64 h-64 rounded-full" style="background:radial-gradient(circle,rgba(0,240,255,0.15),transparent 70%);"></div>
+
+      <div class="relative z-10 grid md:grid-cols-3 gap-8 items-center">
+        <div class="md:col-span-1">
+          <div class="icon-box float mx-auto md:mx-0" style="width:100px;height:100px;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="md:col-span-2">
+          <span class="badge mb-4"><span class="badge-dot"></span>SEMINAR PRESENTATION</span>
+          <h3 class="text-3xl md:text-4xl font-display font-bold mb-4 neon-text">Smart Agriculture</h3>
+          <p class="text-cyan-400 font-mono text-sm mb-4">IoT · Automation · Sustainable Tech</p>
+
+          <p class="text-gray-300 leading-relaxed mb-6">
+            Delivered a comprehensive seminar on <span class="text-cyan-400 font-semibold">Smart Agriculture</span>, exploring how IoT sensors, networking, and automation are transforming traditional farming into intelligent, data-driven operations. The presentation covered real-time crop monitoring, automated irrigation systems, and sustainable technology integration.
+          </p>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">IoT Sensors</span>
+            <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Automation</span>
+            <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Networking</span>
+            <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Sustainability</span>
+            <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Data Analytics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="relative py-24 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-subtitle">// 06 . WHERE I'VE BEEN</p>
+      <h2 class="section-title gradient-text">Experience</h2>
+      <div class="w-24 h-1 mx-auto mt-4" style="background:linear-gradient(90deg,transparent,var(--cyan),transparent);"></div>
+    </div>
+
+    <div class="glass glow-border p-8 reveal card-3d">
+      <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <div class="icon-box">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-2xl font-display font-bold neon-text">Networking & Cybersecurity Intern</h3>
+              <p class="text-cyan-400 font-semibold">Entrust Company</p>
+            </div>
+          </div>
+        </div>
+        <span class="badge"><span class="badge-dot"></span>INTERNSHIP</span>
+      </div>
+
+      <p class="text-gray-400 font-mono text-sm mb-4">Duration: Professional Internship</p>
+
+      <p class="text-gray-300 leading-relaxed mb-6">
+        Gained hands-on exposure to real-world <span class="text-cyan-400 font-semibold">networking infrastructure</span> and <span class="text-cyan-400 font-semibold">cybersecurity operations</span> at Entrust Company. Worked alongside experienced professionals to understand enterprise network architectures, security protocols, and best practices in maintaining secure digital environments.
+      </p>
+
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div class="flex items-center gap-2 text-sm text-gray-400">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Enterprise Networking</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-400">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Security Protocols</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-400">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Network Monitoring</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-400">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Industry Best Practices</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications" class="relative py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-subtitle">// 07 . CREDENTIALS</p>
+      <h2 class="section-title gradient-text">Certifications</h2>
+      <div class="w-24 h-1 mx-auto mt-4" style="background:linear-gradient(90deg,transparent,var(--cyan),transparent);"></div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Cert 1 -->
+      <div class="glass glow-border p-8 reveal card-3d relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 rounded-full" style="background:radial-gradient(circle,rgba(0,255,157,0.15),transparent 70%);"></div>
+
+        <div class="relative z-10">
+          <div class="flex items-center justify-between mb-6">
+            <div class="icon-box" style="background:linear-gradient(135deg,rgba(0,255,157,0.2),rgba(0,240,255,0.2));border-color:rgba(0,255,157,0.5);color:var(--green);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+              </svg>
+            </div>
+            <span class="badge" style="background:rgba(0,255,157,0.15);border-color:rgba(0,255,157,0.5);color:var(--green);">
+              <span class="badge-dot"></span>VERIFIED
+            </span>
+          </div>
+
+          <h3 class="text-2xl font-display font-bold mb-2 neon-text">Basic Networking</h3>
+          <p class="text-cyan-400 font-mono text-sm mb-4">Certified Professional</p>
+          <p class="text-gray-400 leading-relaxed mb-4">
+            Certified in fundamental networking concepts including OSI model, TCP/IP protocols, subnetting, routing, switching, and network troubleshooting.
+          </p>
+          <div class="flex items-center gap-2 text-xs text-gray-500 font-mono">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Issued · Active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cert 2 -->
+      <div class="glass glow-border p-8 reveal card-3d relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 rounded-full" style="background:radial-gradient(circle,rgba(0,240,255,0.15),transparent 70%);"></div>
+
+        <div class="relative z-10">
+          <div class="flex items-center justify-between mb-6">
+            <div class="icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <span class="badge" style="background:rgba(255,189,46,0.15);border-color:rgba(255,189,46,0.5);color:#ffbd2e;">
+              <span class="badge-dot" style="background:#ffbd2e;box-shadow:0 0 10px #ffbd2e;"></span>UPCOMING
+            </span>
+          </div>
+
+          <h3 class="text-2xl font-display font-bold mb-2 neon-text">CCNA Certification</h3>
+          <p class="text-cyan-400 font-mono text-sm mb-4">Cisco Certified Network Associate</p>
+          <p class="text-gray-400 leading-relaxed mb-4">
+            Currently preparing for the prestigious CCNA certification — the industry-standard credential for networking professionals. Expected completion soon.
+          </p>
+          <div class="flex items-center gap-2 text-xs text-gray-500 font-mono">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Coming Soon · In Preparation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="relative py-16 px-6 border-t border-cyan-900/30" style="background:linear-gradient(180deg,transparent,rgba(0,240,255,0.03));">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-lg flex items-center justify-center font-display font-bold text-xl" style="background:linear-gradient(135deg,var(--cyan),var(--blue));color:var(--bg-0);box-shadow:0 0 30px rgba(0,240,255,0.5);">A</div>
+        <div class="text-left">
+          <div class="font-display font-bold neon-text">ACKSHAYARADHA</div>
+          <div class="text-xs text-gray-500 font-mono">cyber.dev</div>
+        </div>
+      </div>
+      <h3 class="text-2xl md:text-3xl font-display font-bold gradient-text mb-4">
+        "Building a Secure Digital Future."
+      </h3>
+      <p class="text-gray-400 max-w-xl mx-auto">
+        Thank you for visiting my portfolio. Let's connect and build something amazing together.
+      </p>
+    </div>
+
+    <div class="pt-8 border-t border-cyan-900/30 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-sm text-gray-500 font-mono">
+        © 2026 Ackshayaradha · Crafted with passion & code
+      </p>
+      <div class="flex items-center gap-2 text-xs text-gray-500 font-mono">
+        <span class="badge-dot"></span>
+        <span>SYSTEM STATUS: ONLINE</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================
+   MATRIX RAIN
+============================================ */
+const matrixCanvas = document.getElementById('matrix-canvas');
+const mctx = matrixCanvas.getContext('2d');
+
+function resizeMatrix() {
+  matrixCanvas.width = window.innerWidth;
+  matrixCanvas.height = window.innerHeight;
+}
+resizeMatrix();
+window.addEventListener('resize', resizeMatrix);
+
+const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ01ABCDEF{}[]<>/\\|';
+const fontSize = 14;
+let columns = Math.floor(matrixCanvas.width / fontSize);
+let drops = Array(columns).fill(1);
+
+function drawMatrix() {
+  mctx.fillStyle = 'rgba(3, 6, 23, 0.05)';
+  mctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+  mctx.fillStyle = '#00f0ff';
+  mctx.font = fontSize + 'px monospace';
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+    mctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix, 50);
+
+window.addEventListener('resize', () => {
+  columns = Math.floor(matrixCanvas.width / fontSize);
+  drops = Array(columns).fill(1);
+});
+
+/* ============================================
+   PARTICLES
+============================================ */
+const pCanvas = document.getElementById('particles-canvas');
+const pctx = pCanvas.getContext('2d');
+
+function resizeParticles() {
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
+}
+resizeParticles();
+window.addEventListener('resize', resizeParticles);
+
+const particles = [];
+const particleCount = 60;
+
+for (let i = 0; i < particleCount; i++) {
+  particles.push({
+    x: Math.random() * pCanvas.width,
+    y: Math.random() * pCanvas.height,
+    vx: (Math.random() - 0.5) * 0.5,
+    vy: (Math.random() - 0.5) * 0.5,
+    size: Math.random() * 2 + 1,
+    color: Math.random() > 0.5 ? '0, 240, 255' : '0, 102, 255'
+  });
+}
+
+function drawParticles() {
+  pctx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        pctx.strokeStyle = `rgba(0, 240, 255, ${0.15 * (1 - dist / 120)})`;
+        pctx.lineWidth = 0.5;
+        pctx.beginPath();
+        pctx.moveTo(particles[i].x, particles[i].y);
+        pctx.lineTo(particles[j].x, particles[j].y);
+        pctx.stroke();
+      }
+    }
+  }
+
+  // Draw particles
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x < 0 || p.x > pCanvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > pCanvas.height) p.vy *= -1;
+
+    pctx.fillStyle = `rgba(${p.color}, 0.8)`;
+    pctx.shadowBlur = 10;
+    pctx.shadowColor = `rgba(${p.color}, 1)`;
+    pctx.beginPath();
+    pctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    pctx.fill();
+  });
+  pctx.shadowBlur = 0;
+
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* ============================================
+   3D GLOBE WITH NETWORK LINES
+============================================ */
+const globeContainer = document.getElementById('globe-container');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 5;
+
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+globeContainer.appendChild(renderer.domElement);
+
+// Globe wireframe
+const globeGeometry = new THREE.SphereGeometry(2, 40, 40);
+const globeMaterial = new THREE.MeshBasicMaterial({
+  color: 0x00f0ff,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.15
+});
+const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+scene.add(globe);
+
+// Inner glow sphere
+const innerGlow = new THREE.Mesh(
+  new THREE.SphereGeometry(1.95, 32, 32),
+  new THREE.MeshBasicMaterial({
+    color: 0x0066ff,
+    transparent: true,
+    opacity: 0.08
+  })
+);
+scene.add(innerGlow);
+
+// Network nodes on globe
+const nodeCount = 80;
+const nodes = [];
+const nodeGeometry = new THREE.SphereGeometry(0.03, 8, 8);
+const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+
+for (let i = 0; i < nodeCount; i++) {
+  const phi = Math.acos(-1 + (2 * i) / nodeCount);
+  const theta = Math.sqrt(nodeCount * Math.PI) * phi;
+
+  const x = 2 * Math.cos(theta) * Math.sin(phi);
+  const y = 2 * Math.sin(theta) * Math.sin(phi);
+  const z = 2 * Math.cos(phi);
+
+  const node = new THREE.Mesh(nodeGeometry, nodeMaterial.clone());
+  node.position.set(x, y, z);
+  nodes.push(node);
+  scene.add(node);
+}
+
+// Connection lines between random nodes
+const lineMaterial = new THREE.LineBasicMaterial({
+  color: 0x00f0ff,
+  transparent: true,
+  opacity: 0.3
+});
+
+for (let i = 0; i < 60; i++) {
+  const a = nodes[Math.floor(Math.random() * nodes.length)];
+  const b = nodes[Math.floor(Math.random() * nodes.length)];
+  if (a !== b) {
+    const geometry = new THREE.BufferGeometry().setFromPoints([a.position, b.position]);
+    const line = new THREE.Line(geometry, lineMaterial);
+    scene.add(line);
+  }
+}
+
+// Outer ring
+const ringGeometry = new THREE.RingGeometry(2.5, 2.55, 64);
+const ringMaterial = new THREE.MeshBasicMaterial({
+  color: 0x00f0ff,
+  side: THREE.DoubleSide,
+  transparent: true,
+  opacity: 0.3
+});
+const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+ring.rotation.x = Math.PI / 2;
+scene.add(ring);
+
+const ring2 = ring.clone();
+ring2.rotation.x = Math.PI / 3;
+ring2.rotation.y = Math.PI / 4;
+scene.add(ring2);
+
+// Animation
+let mouseX = 0, mouseY = 0;
+document.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 0.5;
+});
+
+function animateGlobe() {
+  requestAnimationFrame(animateGlobe);
+  globe.rotation.y += 0.002;
+  innerGlow.rotation.y += 0.002;
+  ring.rotation.z += 0.001;
+  ring2.rotation.z -= 0.0015;
+
+  nodes.forEach((node, i) => {
+    node.rotation.y += 0.002;
+    const pulse = Math.sin(Date.now() * 0.002 + i) * 0.5 + 0.5;
+    node.material.opacity = 0.5 + pulse * 0.5;
+  });
+
+  camera.position.x += (mouseX * 2 - camera.position.x) * 0.02;
+  camera.position.y += (-mouseY * 2 - camera.position.y) * 0.02;
+  camera.lookAt(scene.position);
+
+  renderer.render(scene, camera);
+}
+animateGlobe();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* ============================================
+   TYPING ANIMATION
+============================================ */
+const typingTexts = [
+  'Diploma Computer Science Student',
+  'Seshasayee Institute of Technology',
+  'Cybersecurity Enthusiast',
+  'Networking Enthusiast',
+  'Future CCNA Professional'
+];
+
+const typingEl = document.getElementById('typing-text');
+let textIndex = 0, charIndex = 0, isDeleting = false;
+
+function typeEffect() {
+  const current = typingTexts[textIndex];
+
+  if (isDeleting) {
+    typingEl.textContent = current.substring(0, charIndex - 1);
+    charIndex--;
+  } else {
+    typingEl.textContent = current.substring(0, charIndex + 1);
+    charIndex++;
+  }
+
+  let delay = isDeleting ? 40 : 80;
+
+  if (!isDeleting && charIndex === current.length) {
+    delay = 2000;
+    isDeleting = true;
+  } else if (isDeleting && charIndex === 0) {
+    isDeleting = false;
+    textIndex = (textIndex + 1) % typingTexts.length;
+    delay = 500;
+  }
+
+  setTimeout(typeEffect, delay);
+}
+typeEffect();
+
+/* ============================================
+   TERMINAL ANIMATION
+============================================ */
+const terminalBody = document.getElementById('terminal-body');
+const terminalCommands = [
+  { type: 'prompt', text: '$ whoami' },
+  { type: 'output', text: 'ackshayaradha' },
+  { type: 'prompt', text: '$ cat profile.txt' },
+  { type: 'output', text: '> Diploma CSE @ SIT' },
+  { type: 'output', text: '> Focus: Cybersecurity & Networking' },
+  { type: 'prompt', text: '$ nmap -sV target.network' },
+  { type: 'output', text: 'Scanning... 7 ports open' },
+  { type: 'output', text: 'Status: SECURE ✓' },
+  { type: 'prompt', text: '$ ./launch_career.sh' },
+  { type: 'output', text: 'Initializing future CCNA Pro...' },
+  { type: 'output', text: '<span class="neon-text">[SUCCESS] System ready.</span>' }
+];
+
+let cmdIndex = 0;
+function runTerminal() {
+  if (cmdIndex >= terminalCommands.length) {
+    setTimeout(() => {
+      terminalBody.innerHTML = '';
+      cmdIndex = 0;
+      runTerminal();
+    }, 3000);
+    return;
+  }
+
+  const cmd = terminalCommands[cmdIndex];
+  const line = document.createElement('div');
+  line.style.opacity = '0';
+
+  if (cmd.type === 'prompt') {
+    line.innerHTML = `<span class="prompt">root@cyber:~#</span> <span class="command">${cmd.text.replace('$ ', '')}</span>`;
+  } else {
+    line.innerHTML = `<span class="output">${cmd.text}</span>`;
+  }
+
+  terminalBody.appendChild(line);
+
+  gsap.to(line, { opacity: 1, duration: 0.3, onComplete: () => {
+    cmdIndex++;
+    setTimeout(runTerminal, cmd.type === 'prompt' ? 600 : 400);
+  }});
+
+  terminalBody.scrollTop = terminalBody.scrollHeight;
+}
+setTimeout(runTerminal, 1500);
+
+/* ============================================
+   SKILLS RENDER
+============================================ */
+const skills = [
+  { name: 'Cybersecurity', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>', level: 85 },
+  { name: 'Networking', icon: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>', level: 90 },
+  { name: 'Cisco Packet Tracer', icon: '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>', level: 88 },
+  { name: 'Python', icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>', level: 75 },
+  { name: 'HTML', icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>', level: 92 },
+  { name: 'CSS', icon: '<circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>', level: 88 },
+  { name: 'IoT', icon: '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>', level: 80 }
+];
+
+const skillsGrid = document.getElementById('skills-grid');
+skills.forEach((skill, i) => {
+  const card = document.createElement('div');
+  card.className = 'skill-card glass p-6 reveal';
+  card.innerHTML = `
+    <div class="relative z-10">
+      <div class="icon-box mb-4">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${skill.icon}</svg>
+      </div>
+      <h3 class="font-display font-bold text-lg mb-3">${skill.name}</h3>
+      <div class="flex justify-between text-xs font-mono mb-2">
+        <span class="text-gray-500">PROFICIENCY</span>
+        <span class="neon-text">${skill.level}%</span>
+      </div>
+      <div class="progress-bar" style="height:6px;">
+        <div class="progress-fill" data-level="${skill.level}" style="width:0;"></div>
+      </div>
+    </div>
+  `;
+  skillsGrid.appendChild(card);
+});
+
+/* ============================================
+   GSAP SCROLL ANIMATIONS
+============================================ */
+gsap.registerPlugin(ScrollTrigger);
+
+// Reveal animations
+gsap.utils.toArray('.reveal').forEach((el, i) => {
+  gsap.to(el, {
+    opacity: 1,
+    y: 0,
+    duration: 1,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 85%',
+      toggleActions: 'play none none reverse'
+    },
+    delay: i % 3 * 0.1
+  });
+});
+
+// Progress bar animation
+ScrollTrigger.create({
+  trigger: '#current',
+  start: 'top 70%',
+  onEnter: () => {
+    const fill = document.getElementById('progress-fill');
+    const text = document.getElementById('progress-text');
+    fill.style.width = '65%';
+
+    let current = 0;
+    const interval = setInterval(() => {
+      current++;
+      text.textContent = current + '%';
+      if (current >= 65) clearInterval(interval);
+    }, 30);
+  }
+});
+
+// Skill bars animation
+ScrollTrigger.create({
+  trigger: '#skills',
+  start: 'top 70%',
+  onEnter: () => {
+    document.querySelectorAll('.progress-fill[data-level]').forEach((bar, i) => {
+      setTimeout(() => {
+        bar.style.width = bar.dataset.level + '%';
+      }, i * 100);
+    });
+  }
+});
+
+/* ============================================
+   3D CARD TILT EFFECT
+============================================ */
+document.querySelectorAll('.card-3d').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 20;
+    const rotateY = (centerX - x) / 20;
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+  });
+});
+
+/* ============================================
+   SMOOTH SCROLL
+============================================ */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      window.scrollTo({
+        top: target.offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  });
+});
+
+console.log('%c🛡️ ACKSHAYARADHAKRISHNAN CYBER PORTFOLIO', 'color:#00f0ff;font-size:20px;font-weight:bold;');
+console.log('%cBuilding a Secure Digital Future.', 'color:#0066ff;font-size:14px;');
+</script>
+
+</body>
+</html>
